@@ -79,6 +79,7 @@ router.put("/admin/:id", (req, res) => {
   });
 });
 
+// DELETE ADMIN
 router.delete("/admin/:id", (req, res) => {
     const { id } = req.params;
     mysqlConnection.query(
