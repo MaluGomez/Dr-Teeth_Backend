@@ -11,6 +11,7 @@ app.use(express.json());
 // Routes
 app.use(require('./routes/admins'));
 app.use(require('./routes/odontologos'));
+app.use(require('./routes/pacientes'));
 
 
 // Starting the server
