@@ -1,9 +1,10 @@
+require('dotenv').config();
 const express = require('express');
 const app = express();
 
 
 // Settings
-app.set('port', process.env.PORT || 3000);
+const PORT = process.env.PORT || 3000;
 
 // Middlewares
 app.use(express.json());
@@ -15,7 +16,7 @@ app.use(require('./routes/pacientes'));
 
 
 // Starting the server
-app.listen(app.get('port'), () => {
-  console.log(`Server on port ${app.get('port')}`);
+app.listen(PORT, function () {
+  console.log(`La aplicación arranco en http://localhost:${PORT}`);
 });
 
