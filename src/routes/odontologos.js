@@ -4,9 +4,9 @@ const router = express.Router();
 const mysqlConnection = require("../database");
 
 // LIST ALL
-router.get("/odontologo", (req, res) => {
+router.get("/Odontologo", (req, res) => {
   mysqlConnection.query(
-    "SELECT * FROM drteeth.odontologo",
+    "SELECT * FROM proyecto_drteeth.Odontologo",
     (err, rows, fields) => {
       if (!err) {
         res.json(rows);
@@ -18,10 +18,10 @@ router.get("/odontologo", (req, res) => {
 });
 
 // LIST ONE
-router.get("/odontologo/:word", (req, res) => {
+router.get("/Odontologo/:word", (req, res) => {
   const { word } = req.params;
   mysqlConnection.query(
-    "SELECT * FROM drteeth.odontologo WHERE nombre REGEXP ?  or apellido REGEXP ?;",
+    "SELECT * FROM proyecto_drteeth.Odontologo WHERE nombres REGEXP ?  or apellidos REGEXP ?;",
     [word, word],
     (err, rows, fields) => {
       if (!err) {
@@ -34,52 +34,63 @@ router.get("/odontologo/:word", (req, res) => {
 });
 
 // CREATE ODONTOLOGO
-router.post("/odontologo", (req, res) => {
+router.post("/Odontologo", (req, res) => {
   const {
     idOdontologo,
-    nombre,
-    apellido,
-    direccion,
+    nombres,
+    apellidos,
+    direccionAtencion,
     telefono,
     email,
     numeroRegistro,
     genero,
     fechaNacimiento,
     documentoIdentidad,
-    celular,
+    tipoDoc,
+    nombreUsuario,
+    descripcion,
     contrasena,
+    idAdministrador,
+    idAsistente,
   } = req.body;
   const query = `
       SET @idOdontologo= ?;
-      SET @nombre = ?;
-      SET @apellido = ?;
-      SET @direccion = ?;
+      SET @nombres = ?;
+      SET @apellidos = ?;
+      SET @direccionAtencion = ?;
       SET @telefono = ?;
       SET @email = ?;
       SET @numeroRegistro = ?;
       SET @genero = ?;
       SET @fechaNacimiento = ?;
       SET @documentoIdentidad = ?;
-      SET @celular = ?;
+      SET @tipoDoc = ?;
+      SET @nombreUsuario = ?;
+      SET @descripcion = ?;
       SET @contrasena = ?;
-
+      SET @idAdministrador = ?;
+      SET @idAsistente = ?;
       
-      CALL odontologoAddOrEdit(@idOdontologo, @nombre, @apellido, @direccion, @telefono, @email, @numeroRegistro, @genero, @fechaNacimiento, @documentoIdentidad, @celular, @contrasena);`;
+      CALL newaddoreditOdontologo(@idOdontologo, @nombres, @apellidos, @direccionAtencion, @telefono, @email, @numeroRegistro, @genero, @fechaNacimiento, @documentoIdentidad,  @tipoDoc, @nombreUsuario, @descripcion, @contrasena, @idAdministrador, @idAsistente);`;
   mysqlConnection.query(
     query,
     [
       idOdontologo,
-      nombre,
-      apellido,
-      direccion,
+      nombres,
+      apellidos,
+      direccionAtencion,
       telefono,
       email,
       numeroRegistro,
       genero,
       fechaNacimiento,
       documentoIdentidad,
-      celular,
+      tipoDoc,
+      nombreUsuario,
+      descripcion,
       contrasena,
+      idAdministrador,
+      idAsistente,
     ],
     (err) => {
       if (!err) {

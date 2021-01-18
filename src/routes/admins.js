@@ -4,9 +4,9 @@ const router = express.Router();
 const mysqlConnection = require("../database");
 
 // LIST ALL
-router.get("/admin", (req, res) => {
+router.get("/Administrador", (req, res) => {
   mysqlConnection.query(
-    "SELECT * FROM drteeth.administrador",
+    "SELECT * FROM proyecto_drteeth.Administrador",
     (err, rows, fields) => {
       if (!err) {
         res.json(rows);
@@ -18,10 +18,10 @@ router.get("/admin", (req, res) => {
 });
 
 // LIST ONE
-router.get("/admin/:usu", (req, res) => {
+router.get("/Administrador/:usu", (req, res) => {
   const { usu } = req.params;
   mysqlConnection.query(
-    "SELECT * FROM drteeth.administrador WHERE usuario REGEXP ? ;",
+    "SELECT * FROM proyecto_drteeth.Administrador WHERE usuario REGEXP ? ;",
     [usu],
     (err, rows, fields) => {
       if (!err) {
@@ -34,17 +34,21 @@ router.get("/admin/:usu", (req, res) => {
 });
 
 // CREATE ADMINS
-router.post("/admin", (req, res) => {
-  const { idAdministrador, usuario, contrasena } = req.body;
+router.post("/Administrador", (req, res) => {
+  const { idAdministrador, nombres, apellidos, email, telefono, nombreUsuario, contrasena } = req.body;
   const query = `
       SET @idAdministrador= ?;
-      SET @usuario = ?;
+      SET @nombres = ?;
+      SET @apellidos = ?;
+      SET @email = ?;
+      SET @telefono = ?;
+      SET @nombreUsuario = ?;
       SET @contrasena = ?;
       
-      CALL adminAddOrEdit(@idAdministrador,  @usuario, @contrasena);`;
+      CALL newaddoreditAdministrador(@idAdministrador, @nombres, @apellidos, @email, @telefono , @nombreUsuario, @contrasena);`;
   mysqlConnection.query(
     query,
-    [idAdministrador, usuario, contrasena],
+    [idAdministrador, nombres, apellidos, email, telefono, nombreUsuario, contrasena],
     (err) => {
       if (!err) {
         res.json({
@@ -58,17 +62,21 @@ router.post("/admin", (req, res) => {
 });
 
 // UPDATE ADMIN
-router.put("/admin/:id", (req, res) => {
-  const { usuario, contrasena } = req.body;
-  const { id } = req.params;
+router.put("/Administrador/:id", (req, res) => {
+  const { nombres, apellidos, email, telefono, nombreUsuario, contrasena } = req.body;
+  const { id} = req.params;
   const query = `
       SET @idAdministrador= ?;
-      SET @usuario = ?;
+      SET @nombres = ?;
+      SET @apellidos = ?;
+      SET @email = ?;
+      SET @telefono = ?;
+      SET @nombreUsuario = ?;
       SET @contrasena = ?;
       
-      CALL adminAddOrEdit(@idAdministrador,  @usuario, @contrasena);`;
+      CALL newaddoreditAdministrador(@idAdministrador, @nombres, @apellidos, @email, @telefono , @nombreUsuario, @contrasena);`;
   
-  mysqlConnection.query(query, [id, usuario, contrasena], (err) => {
+  mysqlConnection.query(query, [idAdministrador, nombres, apellidos, email, telefono, nombreUsuario, contrasena], (err) => {
     if (!err) {
       res.json({
         status: "Se han actualizado correctamente los datos del administrador",
@@ -80,10 +88,10 @@ router.put("/admin/:id", (req, res) => {
 });
 
 // DELETE ADMIN
-router.delete("/admin/:id", (req, res) => {
+router.delete("/Administrador/:id", (req, res) => {
     const { id } = req.params;
     mysqlConnection.query(
-      "DELETE FROM drteeth.administrador WHERE idAdministrador = ?",
+      "DELETE FROM proyecto_drteeth.Administrador WHERE idAdministrador = ?",
       [id],
       (err) => {
         if (!err) {

@@ -4,9 +4,9 @@ const router = express.Router();
 const mysqlConnection = require("../database");
 
 // LIST ALL
-router.get("/paciente", (req, res) => {
+router.get("/Paciente", (req, res) => {
   mysqlConnection.query(
-    "SELECT * FROM drteeth.paciente",
+    "SELECT * FROM proyecto_drteeth.Paciente",
     (err, rows, fields) => {
       if (!err) {
         res.json(rows);
@@ -18,10 +18,10 @@ router.get("/paciente", (req, res) => {
 });
 
 // LIST ONE
-router.get("/paciente/:word", (req, res) => {
+router.get("/Paciente/:word", (req, res) => {
   const { word } = req.params;
   mysqlConnection.query(
-    "SELECT * FROM drteeth.paciente WHERE nombre REGEXP ?  or apellidos REGEXP ?;",
+    "SELECT * FROM proyecto_drteeth.Paciente WHERE nombre REGEXP ?  or apellidos REGEXP ?;",
     [word, word],
     (err, rows, fields) => {
       if (!err) {
@@ -34,63 +34,60 @@ router.get("/paciente/:word", (req, res) => {
 });
 
 // CREATE PACIENTE
-router.post("/paciente", (req, res) => {
+router.post("/Paciente", (req, res) => {
   const {
     idPaciente,
-    nombre,
+    nombres,
     apellidos,
     numeroIdentificacion,
-    tipoDocumento,
+    tipoIdentificacion,
     fechaNacimiento,
     direccion,
-    edad,
-    nacionalidad,
     genero,
     rh,
     telefono,
     email,
     eps,
-    ciudad,
     idOdontologo,
+    idAcudiente,
+    idAntecedente
   } = req.body;
   const query = `
         SET @idPaciente= ?;
-        SET @nombre = ?;
+        SET @nombres = ?;
         SET @apellidos = ?;
         SET @numeroIdentificacion = ?;
-        SET @tipoDocumento = ?;
+        SET @tipoIdentificacion = ?;
         SET @fechaNacimiento = ?;
         SET @direccion = ?;
-        SET @edad = ?;
-        SET @nacionalidad = ?;
         SET @genero = ?;
         SET @rh = ?;
         SET @telefono = ?;
         SET @email = ?;
         SET @eps = ?;
-        SET @ciudad = ?;
         SET @idOdontologo = ?;
+        SET @idAcudiente = ?;
+        SET @idAntecedente = ?;
         
-        CALL pacienteAddOrEdit(@idPaciente, @nombre, @apellidos, @numeroIdentificacion, @tipoDocumento, @fechaNacimiento, @direccion, @edad, @nacionalidad, @genero, @rh, @telefono, @email, @eps, @ciudad, @idOdontologo);`;
+        CALL newaddoreditPaciente(@idPaciente, @nombres, @apellidos, @numeroIdentificacion, @tipoIdentificacion, @fechaNacimiento, @direccion, @genero, @rh, @telefono, @email, @eps, @idOdontologo,@idAcudiente, @idAntecedente);`;
   mysqlConnection.query(
     query,
     [
       idPaciente,
-      nombre,
+      nombres,
       apellidos,
       numeroIdentificacion,
-      tipoDocumento,
+      tipoIdentificacion,
       fechaNacimiento,
       direccion,
-      edad,
-      nacionalidad,
       genero,
       rh,
       telefono,
       email,
       eps,
-      ciudad,
       idOdontologo,
+      idAcudiente,
+      idAntecedente
     ],
     (err) => {
       if (!err) {
@@ -105,53 +102,52 @@ router.post("/paciente", (req, res) => {
 });
 
 // UPDATE PACIENTE
-router.put("/paciente/:id", (req, res) => {
+router.put("/Paciente/:id", (req, res) => {
   const {
-    nombre,
-    apellidos,
-    numeroIdentificacion,
-    tipoDocumento,
-    fechaNacimiento,
-    direccion,
-    edad,
-    nacionalidad,
-    genero,
-    rh,
-    telefono,
-    email,
-    eps,
-    ciudad,
-    idOdontologo,
+      
+      nombres,
+      apellidos,
+      numeroIdentificacion,
+      tipoIdentificacion,
+      fechaNacimiento,
+      direccion,
+      genero,
+      rh,
+      telefono,
+      email,
+      eps,
+      idOdontologo,
+      idAcudiente,
+      idAntecedente
   } = req.body;
   const { id } = req.params;
   const query = `
         SET @idPaciente= ?;
-        SET @nombre = ?;
+        SET @nombres = ?;
         SET @apellidos = ?;
         SET @numeroIdentificacion = ?;
-        SET @tipoDocumento = ?;
+        SET @tipoIdentificacion = ?;
         SET @fechaNacimiento = ?;
         SET @direccion = ?;
-        SET @edad = ?;
-        SET @nacionalidad = ?;
         SET @genero = ?;
         SET @rh = ?;
         SET @telefono = ?;
         SET @email = ?;
         SET @eps = ?;
-        SET @ciudad = ?;
         SET @idOdontologo = ?;
+        SET @idAcudiente = ?;
+        SET @idAntecedente = ?;
       
-        CALL pacienteAddOrEdit(@idPaciente, @nombre, @apellidos, @numeroIdentificacion, @tipoDocumento, @fechaNacimiento, @direccion, @edad, @nacionalidad, @genero, @rh, @telefono, @email, @eps, @ciudad, @idOdontologo);`;
+        CALL newaddoreditPaciente(@idPaciente, @nombres, @apellidos, @numeroIdentificacion, @tipoIdentificacion, @fechaNacimiento, @direccion, @genero, @rh, @telefono, @email, @eps, @idOdontologo,@idAcudiente, @idAntecedente);`;
 
   mysqlConnection.query(
     query,
     [
       id,
-      nombre,
+      nombres,
       apellidos,
       numeroIdentificacion,
-      tipoDocumento,
+      tipoIdentificacion,
       fechaNacimiento,
       direccion,
       edad,
@@ -163,6 +159,8 @@ router.put("/paciente/:id", (req, res) => {
       eps,
       ciudad,
       idOdontologo,
+      idAcudiente,
+      idAntecedente
     ],
     (err) => {
       if (!err) {
@@ -177,10 +175,10 @@ router.put("/paciente/:id", (req, res) => {
 });
 
 // DELETE PACIENTE
-router.delete("/paciente/:id", (req, res) => {
+router.delete("/Paciente/:id", (req, res) => {
   const { id } = req.params;
   mysqlConnection.query(
-    "DELETE FROM drteeth.paciente WHERE idPaciente = ?",
+    "DELETE FROM proyecto_drteeth.Paciente WHERE idPaciente = ?",
     [id],
     (err) => {
       if (!err) {
