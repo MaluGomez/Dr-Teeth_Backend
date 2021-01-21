@@ -47,9 +47,9 @@ router.post("/Odontologo", (req, res) => {
     fechaNacimiento,
     documentoIdentidad,
     tipoDoc,
-    nombreUsuario,
     descripcion,
     contrasena,
+    rol,
     idAdministrador,
     idAsistente,
   } = req.body;
@@ -65,13 +65,13 @@ router.post("/Odontologo", (req, res) => {
       SET @fechaNacimiento = ?;
       SET @documentoIdentidad = ?;
       SET @tipoDoc = ?;
-      SET @nombreUsuario = ?;
       SET @descripcion = ?;
       SET @contrasena = ?;
+      SET @rol = ?;
       SET @idAdministrador = ?;
       SET @idAsistente = ?;
       
-      CALL newaddoreditOdontologo(@idOdontologo, @nombres, @apellidos, @direccionAtencion, @telefono, @email, @numeroRegistro, @genero, @fechaNacimiento, @documentoIdentidad,  @tipoDoc, @nombreUsuario, @descripcion, @contrasena, @idAdministrador, @idAsistente);`;
+      CALL newaddoreditOdontologo(@idOdontologo, @nombres, @apellidos, @direccionAtencion, @telefono, @email, @numeroRegistro, @genero, @fechaNacimiento, @documentoIdentidad,  @tipoDoc, @descripcion, @contrasena, @rol, @idAdministrador, @idAsistente);`;
   mysqlConnection.query(
     query,
     [
@@ -86,16 +86,16 @@ router.post("/Odontologo", (req, res) => {
       fechaNacimiento,
       documentoIdentidad,
       tipoDoc,
-      nombreUsuario,
       descripcion,
       contrasena,
+      rol,
       idAdministrador,
       idAsistente,
     ],
     (err) => {
       if (!err) {
         res.json({
-          status: "Se ha creado correctamente el nuevo odontologo",
+          status: "Se ha creado correctamente el nuevo odontólogo",
         });
       } else {
         console.log(err);

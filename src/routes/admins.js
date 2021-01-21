@@ -35,20 +35,21 @@ router.get("/Administrador/:usu", (req, res) => {
 
 // CREATE ADMINS
 router.post("/Administrador", (req, res) => {
-  const { idAdministrador, nombres, apellidos, email, telefono, nombreUsuario, contrasena } = req.body;
+  const { idAdministrador, nombres, apellidos, email, telefono, contrasena , rol} = req.body;
   const query = `
       SET @idAdministrador= ?;
       SET @nombres = ?;
       SET @apellidos = ?;
       SET @email = ?;
       SET @telefono = ?;
-      SET @nombreUsuario = ?;
       SET @contrasena = ?;
+      SET @rol= ?;
+
       
-      CALL newaddoreditAdministrador(@idAdministrador, @nombres, @apellidos, @email, @telefono , @nombreUsuario, @contrasena);`;
+      CALL newaddoreditAdministrador(@idAdministrador, @nombres, @apellidos, @email, @telefono , @contrasena, @rol);`;
   mysqlConnection.query(
     query,
-    [idAdministrador, nombres, apellidos, email, telefono, nombreUsuario, contrasena],
+    [idAdministrador, nombres, apellidos, email, telefono, contrasena, rol],
     (err) => {
       if (!err) {
         res.json({
@@ -63,7 +64,7 @@ router.post("/Administrador", (req, res) => {
 
 // UPDATE ADMIN
 router.put("/Administrador/:id", (req, res) => {
-  const { nombres, apellidos, email, telefono, nombreUsuario, contrasena } = req.body;
+  const { nombres, apellidos, email, telefono, contrasena, rol } = req.body;
   const { id} = req.params;
   const query = `
       SET @idAdministrador= ?;
@@ -71,12 +72,12 @@ router.put("/Administrador/:id", (req, res) => {
       SET @apellidos = ?;
       SET @email = ?;
       SET @telefono = ?;
-      SET @nombreUsuario = ?;
       SET @contrasena = ?;
+      SET @rol = ?;
       
-      CALL newaddoreditAdministrador(@idAdministrador, @nombres, @apellidos, @email, @telefono , @nombreUsuario, @contrasena);`;
+      CALL newaddoreditAdministrador(@idAdministrador, @nombres, @apellidos, @email, @telefono , @contrasena, @rol);`;
   
-  mysqlConnection.query(query, [idAdministrador, nombres, apellidos, email, telefono, nombreUsuario, contrasena], (err) => {
+  mysqlConnection.query(query, [idAdministrador, nombres, apellidos, email, telefono, contrasena, rol], (err) => {
     if (!err) {
       res.json({
         status: "Se han actualizado correctamente los datos del administrador",
