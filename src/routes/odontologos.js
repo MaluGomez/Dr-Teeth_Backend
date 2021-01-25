@@ -50,8 +50,6 @@ router.post("/Odontologo", (req, res) => {
     descripcion,
     contrasena,
     rol,
-    idAdministrador,
-    idAsistente,
   } = req.body;
   const query = `
       SET @idOdontologo= ?;
@@ -68,10 +66,8 @@ router.post("/Odontologo", (req, res) => {
       SET @descripcion = ?;
       SET @contrasena = ?;
       SET @rol = ?;
-      SET @idAdministrador = ?;
-      SET @idAsistente = ?;
       
-      CALL newaddoreditOdontologo(@idOdontologo, @nombres, @apellidos, @direccionAtencion, @telefono, @email, @numeroRegistro, @genero, @fechaNacimiento, @documentoIdentidad,  @tipoDoc, @descripcion, @contrasena, @rol, @idAdministrador, @idAsistente);`;
+      CALL newaddoreditOdontologo(@idOdontologo, @nombres, @apellidos, @direccionAtencion, @telefono, @email, @numeroRegistro, @genero, @fechaNacimiento, @documentoIdentidad,  @tipoDoc, @descripcion, @contrasena, @rol);`;
   mysqlConnection.query(
     query,
     [
@@ -88,9 +84,7 @@ router.post("/Odontologo", (req, res) => {
       tipoDoc,
       descripcion,
       contrasena,
-      rol,
-      idAdministrador,
-      idAsistente,
+      1,
     ],
     (err) => {
       if (!err) {

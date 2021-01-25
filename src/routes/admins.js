@@ -35,7 +35,8 @@ router.get("/Administrador/:usu", (req, res) => {
 
 // CREATE ADMINS
 router.post("/Administrador", (req, res) => {
-  const { idAdministrador, nombres, apellidos, email, telefono, contrasena , rol} = req.body;
+  const { idAdministrador, nombres, apellidos, email, telefono, contrasena } = req.body;
+  console.log(idAdministrador, nombres, apellidos, email, telefono, contrasena)
   const query = `
       SET @idAdministrador= ?;
       SET @nombres = ?;
@@ -43,19 +44,21 @@ router.post("/Administrador", (req, res) => {
       SET @email = ?;
       SET @telefono = ?;
       SET @contrasena = ?;
-      SET @rol= ?;
-
+      SET @rol =?;
       
-      CALL newaddoreditAdministrador(@idAdministrador, @nombres, @apellidos, @email, @telefono , @contrasena, @rol);`;
+      CALL newaddoreditAdministrador(@idAdministrador, @nombres, @apellidos, @email, @telefono, @contrasena, @rol);`;
   mysqlConnection.query(
     query,
-    [idAdministrador, nombres, apellidos, email, telefono, contrasena, rol],
+    [idAdministrador, nombres, apellidos, email, telefono, contrasena, 0],
     (err) => {
       if (!err) {
         res.json({
           status: "Se ha creado correctamente el nuevo usuario administrador",
         });
       } else {
+        res.json({
+          status: "Se ha producido un error al crear el usuario!!!!",
+        });
         console.log(err);
       }
     }
