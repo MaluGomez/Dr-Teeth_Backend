@@ -33,6 +33,7 @@ router.get("/Paciente/:word", (req, res) => {
   );
 });
 
+
 // CREATE PACIENTE
 router.post("/Paciente", (req, res) => {
   const {
