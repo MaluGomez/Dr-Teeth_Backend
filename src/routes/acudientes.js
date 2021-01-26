@@ -58,7 +58,7 @@ router.post("/Acudiente", (req, res) => {
 router.delete("/Acudiente/:id", (req, res) => {
     const { id } = req.params;
     mysqlConnection.query(
-      "DELETE FROM proyecto_drteeth.Acudiente WHERE idAcudiente = ?",
+      "DELETE FROM proyecto_drteeth.Acudiente WHERE idPaciente = ?",
       [id],
       (err) => {
         if (!err) {

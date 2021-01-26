@@ -17,6 +17,7 @@ app.use(require('./routes/odontologos'));
 app.use(require('./routes/pacientes'));
 app.use(require('./routes/Login'));
 app.use(require('./routes/acudientes'));
+app.use(require('./routes/antecedentes'));
 
 
 // Starting the server

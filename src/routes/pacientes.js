@@ -100,20 +100,7 @@ router.post("/Paciente", (req, res) => {
 
 // UPDATE PACIENTE
 router.put("/Paciente/:id", (req, res) => {
-  const {
-      
-      nombres,
-      apellidos,
-      numeroIdentificacion,
-      tipoIdentificacion,
-      fechaNacimiento,
-      direccion,
-      genero,
-      rh,
-      telefono,
-      email,
-      eps,
-      idOdontologo,
+  const {nombres,apellidos,numeroIdentificacion,tipoIdentificacion,fechaNacimiento,direccion,genero,rh,telefono,email,eps,idOdontologo,
   } = req.body;
   const { id } = req.params;
   const query = `
@@ -136,22 +123,7 @@ router.put("/Paciente/:id", (req, res) => {
   mysqlConnection.query(
     query,
     [
-      id,
-      nombres,
-      apellidos,
-      numeroIdentificacion,
-      tipoIdentificacion,
-      fechaNacimiento,
-      direccion,
-      edad,
-      nacionalidad,
-      genero,
-      rh,
-      telefono,
-      email,
-      eps,
-      ciudad,
-      idOdontologo
+      id,nombres, apellidos, numeroIdentificacion,tipoIdentificacion,fechaNacimiento,direccion,edad,nacionalidad,genero,rh,telefono,email,eps,ciudad,idOdontologo
     ],
     (err) => {
       if (!err) {
