@@ -50,8 +50,7 @@ router.post("/Paciente", (req, res) => {
     email,
     eps,
     idOdontologo,
-    idAcudiente,
-    idAntecedente
+    
   } = req.body;
   const query = `
         SET @idPaciente= ?;
@@ -67,10 +66,9 @@ router.post("/Paciente", (req, res) => {
         SET @email = ?;
         SET @eps = ?;
         SET @idOdontologo = ?;
-        SET @idAcudiente = ?;
-        SET @idAntecedente = ?;
+
         
-        CALL newaddoreditPaciente(@idPaciente, @nombres, @apellidos, @numeroIdentificacion, @tipoIdentificacion, @fechaNacimiento, @direccion, @genero, @rh, @telefono, @email, @eps, @idOdontologo,@idAcudiente, @idAntecedente);`;
+        CALL newaddoreditPaciente(@idPaciente, @nombres, @apellidos, @numeroIdentificacion, @tipoIdentificacion, @fechaNacimiento, @direccion, @genero, @rh, @telefono, @email, @eps, @idOdontologo);`;
   mysqlConnection.query(
     query,
     [
@@ -86,9 +84,7 @@ router.post("/Paciente", (req, res) => {
       telefono,
       email,
       eps,
-      idOdontologo,
-      idAcudiente,
-      idAntecedente
+      idOdontologo
     ],
     (err) => {
       if (!err) {
@@ -118,8 +114,6 @@ router.put("/Paciente/:id", (req, res) => {
       email,
       eps,
       idOdontologo,
-      idAcudiente,
-      idAntecedente
   } = req.body;
   const { id } = req.params;
   const query = `
@@ -136,10 +130,8 @@ router.put("/Paciente/:id", (req, res) => {
         SET @email = ?;
         SET @eps = ?;
         SET @idOdontologo = ?;
-        SET @idAcudiente = ?;
-        SET @idAntecedente = ?;
       
-        CALL newaddoreditPaciente(@idPaciente, @nombres, @apellidos, @numeroIdentificacion, @tipoIdentificacion, @fechaNacimiento, @direccion, @genero, @rh, @telefono, @email, @eps, @idOdontologo,@idAcudiente, @idAntecedente);`;
+        CALL newaddoreditPaciente(@idPaciente, @nombres, @apellidos, @numeroIdentificacion, @tipoIdentificacion, @fechaNacimiento, @direccion, @genero, @rh, @telefono, @email, @eps, @idOdontologo);`;
 
   mysqlConnection.query(
     query,
@@ -159,9 +151,7 @@ router.put("/Paciente/:id", (req, res) => {
       email,
       eps,
       ciudad,
-      idOdontologo,
-      idAcudiente,
-      idAntecedente
+      idOdontologo
     ],
     (err) => {
       if (!err) {

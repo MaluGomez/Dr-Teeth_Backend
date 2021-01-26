@@ -16,6 +16,7 @@ app.use(require('./routes/admins'));
 app.use(require('./routes/odontologos'));
 app.use(require('./routes/pacientes'));
 app.use(require('./routes/Login'));
+app.use(require('./routes/acudientes'));
 
 
 // Starting the server
