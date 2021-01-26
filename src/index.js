@@ -18,6 +18,7 @@ app.use(require('./routes/pacientes'));
 app.use(require('./routes/Login'));
 app.use(require('./routes/acudientes'));
 app.use(require('./routes/antecedentes'));
+app.use(require('./routes/asistente'));
 
 
 // Starting the server

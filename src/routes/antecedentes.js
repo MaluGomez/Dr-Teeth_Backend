@@ -21,6 +21,41 @@ router.get("/Antecedente/:id", (req, res) => {
 });
 
 
+//CREATE ANTECEDENTES
+router.post("/Asistente", (req, res) => {
+    const { idAntecedente, pregunta1, pregunta2, pregunta3, pregunta4, pregunta5, pregunta6, observacion, idPaciente} = req.body;
+    const query = `
+        SET @idAntecedente= ?;
+        SET @pregunta1 = ?;
+        SET @pregunta2 = ?;
+        SET @pregunta3 = ?;
+        SET @pregunta4 = ?;
+        SET @pregunta5 = ?;
+        SET @pregunta6 = ?;
+        SET @observacion = ?;
+        SET @idPaciente = ?;
+        
+        
+        CALL newaddoreditAsistente(@idAntecedente, @pregunta1, @pregunta2, @pregunta3, @pregunta4, @pregunta5, @pregunta6, @observacion,@idPaciente);`;
+    mysqlConnection.query(
+      query,
+      [idAntecedente, pregunta1, pregunta2, pregunta3, pregunta4, pregunta5, pregunta6, observacion, idPaciente],
+      (err) => {
+        if (!err) {
+          res.json({
+            status: "Se ha creado correctamente el nuevo antecedente del paciente",
+          });
+        } else {
+          res.json({
+            status: "Se ha producido un error al crear el antecedente del paciente!!!",
+          });
+          console.log(err);
+        }
+      }
+    );
+  });
+
+
 router.delete("/Antecedente/:id", (req, res) => {
     const { id } = req.params;
     mysqlConnection.query(
