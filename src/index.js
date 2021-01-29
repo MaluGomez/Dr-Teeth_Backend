@@ -19,6 +19,7 @@ app.use(require('./routes/Login'));
 app.use(require('./routes/acudientes'));
 app.use(require('./routes/antecedentes'));
 app.use(require('./routes/asistente'));
+app.use(require('./routes/cita'));
 
 
 // Starting the server
