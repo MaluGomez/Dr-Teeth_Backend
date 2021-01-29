@@ -1,6 +1,5 @@
 const express = require("express");
 const router = express.Router();
-
 const mysqlConnection = require("../database");
 
 // LIST ALL
@@ -48,8 +47,8 @@ router.post("/Paciente", (req, res) => {
     rh,
     telefono,
     email,
-    eps,
-    idOdontologo,
+    eps
+    //idOdontologo,
     
   } = req.body;
   const query = `
@@ -65,10 +64,9 @@ router.post("/Paciente", (req, res) => {
         SET @telefono = ?;
         SET @email = ?;
         SET @eps = ?;
-        SET @idOdontologo = ?;
 
         
-        CALL newaddoreditPaciente(@idPaciente, @nombres, @apellidos, @numeroIdentificacion, @tipoIdentificacion, @fechaNacimiento, @direccion, @genero, @rh, @telefono, @email, @eps, @idOdontologo);`;
+        CALL newaddoreditPaciente(@idPaciente, @nombres, @apellidos, @numeroIdentificacion, @tipoIdentificacion, @fechaNacimiento, @direccion, @genero, @rh, @telefono, @email, @eps);`;
   mysqlConnection.query(
     query,
     [
@@ -83,8 +81,8 @@ router.post("/Paciente", (req, res) => {
       rh,
       telefono,
       email,
-      eps,
-      idOdontologo
+      eps
+      //idOdontologo
     ],
     (err) => {
       if (!err) {
