@@ -20,6 +20,10 @@ app.use(require('./routes/acudientes'));
 app.use(require('./routes/antecedentes'));
 app.use(require('./routes/asistente'));
 app.use(require('./routes/cita'));
+app.use(require('./routes/tratamiento'));
+app.use(require('./routes/odontograma'));
+
+
 
 
 // Starting the server
