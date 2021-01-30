@@ -22,6 +22,7 @@ app.use(require('./routes/asistente'));
 app.use(require('./routes/cita'));
 app.use(require('./routes/tratamiento'));
 app.use(require('./routes/odontograma'));
+app.use(require('./routes/consulta'));
 
 
 
