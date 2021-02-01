@@ -66,7 +66,6 @@ router.post("/Paciente", (req, res) => {
         SET @telefono = ?;
         SET @email = ?;
         SET @eps = ?;
-
         
         CALL newaddoreditPaciente(@idPaciente, @nombres, @apellidos, @numeroIdentificacion, @tipoIdentificacion, @fechaNacimiento, @direccion, @genero, @rh, @telefono, @email, @eps);`;
   mysqlConnection.query(
@@ -102,7 +101,6 @@ router.put('/Paciente/:id', (req, res) => {
       SET @email = ?;
       SET @eps = ?;
       SET @idOdontologo = ?;
-
   
   CALL newaddoreditPaciente(@idPaciente, @nombres, @apellidos, @numeroIdentificacion, @tipoIdentificacion, @fechaNacimiento, @direccion, @genero, @rh, @telefono, @email, @eps, @idOdontologo);`;
   mysqlConnection.query(query, [id,nombres,apellidos,numeroIdentificacion,tipoIdentificacion,fechaNacimiento,direccion,genero,rh,telefono,email,eps,idOdontologo], (err, rows, fields) => {
