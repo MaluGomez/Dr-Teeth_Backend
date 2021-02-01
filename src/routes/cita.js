@@ -40,7 +40,7 @@ router.post("/Cita", (req, res) => {
       (err) => {
         if (!err) {
           res.json({
-            status: "Se ha agendado correctamente una nueva cita Odontologica",
+            status: "Se ha agendado correctamente una nueva cita Odontólogica",
           });
         } else {
           console.log(err);
