@@ -16,6 +16,20 @@ router.get("/Paciente", (req, res) => {
   );
 });
 
+router.get("/Paciente/:numeroIdentificacion", (req, res) => {
+  const { numeroIdentificacion } = req.params;
+  mysqlConnection.query(
+    "SELECT * FROM proyecto_drteeth.Paciente WHERE numeroIdentificacion =?", [numeroIdentificacion],
+    (err, rows) => {
+      if (!err) {
+        res.json(rows);
+      } else {
+        console.log(err);
+      }
+    }
+  );
+});
+
 // LIST PACIENTE FOR IDODONTOLOGO
 router.get("/Paciente/Odontologo/:idOdontologo", (req, res) => {
   const { idOdontologo } = req.params;
@@ -51,31 +65,13 @@ router.get("/Paciente/:word", (req, res) => {
 
 // CREATE PACIENTE
 router.post("/Paciente", (req, res) => {
-  const {idPaciente,nombres,apellidos,numeroIdentificacion,tipoIdentificacion,fechaNacimiento,direccion,genero,rh,telefono,email,eps
-  } = req.body;
-  const query = `
-        SET @idPaciente= ?;
-        SET @nombres = ?;
-        SET @apellidos = ?;
-        SET @numeroIdentificacion = ?;
-        SET @tipoIdentificacion = ?;
-        SET @fechaNacimiento = ?;
-        SET @direccion = ?;
-        SET @genero = ?;
-        SET @rh = ?;
-        SET @telefono = ?;
-        SET @email = ?;
-        SET @eps = ?;
-        
-        CALL newaddoreditPaciente(@idPaciente, @nombres, @apellidos, @numeroIdentificacion, @tipoIdentificacion, @fechaNacimiento, @direccion, @genero, @rh, @telefono, @email, @eps);`;
-  mysqlConnection.query(
-    query,
-    [idPaciente,nombres,apellidos,numeroIdentificacion,tipoIdentificacion,fechaNacimiento,direccion,genero,rh,telefono,email,eps],
-    (err) => {
+  const {nombres, apellidos, numeroIdentificacion, tipoIdentificacion, fechaNacimiento, direccion, genero, rh, telefono, email,eps, idOdontologo} = req.body;
+  console.log(nombres, apellidos, numeroIdentificacion, tipoIdentificacion, fechaNacimiento, direccion, genero, rh, telefono, email,eps, idOdontologo)
+  const query = `INSERT INTO Paciente VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?);`
+  mysqlConnection.query(query,[0, nombres, apellidos, numeroIdentificacion, tipoIdentificacion, fechaNacimiento, direccion, genero, rh, telefono, email, eps, idOdontologo],
+    (err, rows) => {
       if (!err) {
-        res.json({
-          status: "Se ha creado correctamente un nuevo paciente",
-        });
+        res.json(rows);
       } else {
         console.log(err);
       }
@@ -84,26 +80,22 @@ router.post("/Paciente", (req, res) => {
 });
 
 // UPDATE PACIENTE
-router.put('/Paciente/:id', (req, res) => {
-  const {nombres,apellidos,numeroIdentificacion,tipoIdentificacion,fechaNacimiento,direccion,genero,rh,telefono,email,eps,idOdontologo } = req.body;
-  const { id } = req.params;
-  const query = `
-      SET @idPaciente= ?;
-      SET @nombres = ?;
-      SET @apellidos = ?;
-      SET @numeroIdentificacion = ?;
-      SET @tipoIdentificacion = ?;
-      SET @fechaNacimiento = ?;
-      SET @direccion = ?;
-      SET @genero = ?;
-      SET @rh = ?;
-      SET @telefono = ?;
-      SET @email = ?;
-      SET @eps = ?;
-      SET @idOdontologo = ?;
-  
-  CALL newaddoreditPaciente(@idPaciente, @nombres, @apellidos, @numeroIdentificacion, @tipoIdentificacion, @fechaNacimiento, @direccion, @genero, @rh, @telefono, @email, @eps, @idOdontologo);`;
-  mysqlConnection.query(query, [id,nombres,apellidos,numeroIdentificacion,tipoIdentificacion,fechaNacimiento,direccion,genero,rh,telefono,email,eps,idOdontologo], (err, rows, fields) => {
+router.put('/Paciente', (req, res) => {
+  const {nombres,apellidos,numeroIdentificacion,tipoIdentificacion,fechaNacimiento,direccion,genero,rh,telefono,email,eps,idPaciente } = req.body;
+  const query = ` UPDATE Paciente
+      SET nombres = ?,
+      apellidos = ?,
+      numeroIdentificacion = ?,
+      tipoIdentificacion = ?,
+      fechaNacimiento = ?,
+      direccion = ?,
+      genero = ?,
+      rh = ?,
+      telefono = ?,
+      email = ?,
+      eps = ?
+      WHERE idPaciente = ?;`;
+  mysqlConnection.query(query, [nombres,apellidos,numeroIdentificacion,tipoIdentificacion,fechaNacimiento,direccion,genero,rh,telefono,email,eps,idPaciente], (err) => {
     if(!err) {
       res.json({status: 'Se actualizaron correctamente los datos del paciente '});
     } else {

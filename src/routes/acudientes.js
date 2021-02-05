@@ -6,12 +6,14 @@ const mysqlConnection = require("../database");
 
 //GET A ACUDIENTE
 router.get("/Acudiente/:id", (req, res) => {
-    const { id} = req.params;
+    const { id } = req.params;
+    console.log(id)
     mysqlConnection.query(
       "SELECT * FROM proyecto_drteeth.Acudiente WHERE idPaciente = ?;",
       [id],
       (err, rows) => {
         if (!err) {
+          console.log(rows)
           res.json(rows);
         } else {
           console.log(err);
@@ -23,20 +25,11 @@ router.get("/Acudiente/:id", (req, res) => {
 
 // CREATE ACUDIENTE
 router.post("/Acudiente", (req, res) => {
-    const { idAcudiente, nombres, apellidos, parentesco, telefono, idPaciente } = req.body;
-    const query = `
-        SET @idAcudiente= ?;
-        SET @nombres = ?;
-        SET @apellidos = ?;
-        SET @parentesco = ?;
-        SET @telefono = ?;
-        SET @idPaciente = ?;
-        
-        
-        CALL newaddoreditAcudiente(@idAcudiente, @nombres, @apellidos, @parentesco, @telefono, @idPaciente);`;
+    const { nombres, apellidos, parentesco, telefono, idPaciente } = req.body;
+    const query = `INSERT INTO Acudiente VALUES (?,?,?,?,?,?)`;
     mysqlConnection.query(
       query,
-      [idAcudiente, nombres, apellidos, parentesco, telefono, idPaciente],
+      [0, nombres, apellidos, parentesco, telefono, idPaciente],
       (err) => {
         if (!err) {
           res.json({

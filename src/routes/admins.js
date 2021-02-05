@@ -36,7 +36,6 @@ router.get("/Administrador/:usu", (req, res) => {
 // CREATE ADMINS
 router.post("/Administrador", (req, res) => {
   const { idAdministrador, nombres, apellidos, email, telefono, contrasena } = req.body;
-  console.log(idAdministrador, nombres, apellidos, email, telefono, contrasena)
   const query = `
       SET @idAdministrador= ?;
       SET @nombres = ?;
@@ -66,21 +65,14 @@ router.post("/Administrador", (req, res) => {
 });
 
 // UPDATE ADMIN
-router.put("/Administrador/:id", (req, res) => {
-  const { nombres, apellidos, email, telefono, contrasena, rol } = req.body;
-  const { id} = req.params;
-  const query = `
-      SET @idAdministrador= ?;
-      SET @nombres = ?;
-      SET @apellidos = ?;
-      SET @email = ?;
-      SET @telefono = ?;
-      SET @contrasena = ?;
-      SET @rol = ?;
-      
-      CALL newaddoreditAdministrador(@idAdministrador, @nombres, @apellidos, @email, @telefono , @contrasena, @rol);`;
-  
-  mysqlConnection.query(query, [idAdministrador, nombres, apellidos, email, telefono, contrasena, rol], (err) => {
+router.put("/Administrador", (req, res) => {
+  console.log("Entre actualizar Admin")
+  const { nombres, apellidos, email, telefono, idAdministrador } = req.body;
+  const query = `UPDATE Administrador
+  SET nombres =?, apellidos =?, email =?, telefono =?
+  WHERE idAdministrador =?;`;
+  console.log("Pase!", nombres, apellidos, email, telefono, idAdministrador)
+  mysqlConnection.query(query, [nombres, apellidos, email, telefono, idAdministrador], (err) => {
     if (!err) {
       res.json({
         status: "Se han actualizado correctamente los datos del administrador",

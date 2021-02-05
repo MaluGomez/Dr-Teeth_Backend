@@ -5,7 +5,7 @@ const mysqlConnection = require("../database");
 
 
 router.get("/Odontograma/:id", (req, res) => {
-    const { id} = req.params;
+    const { id } = req.params;
     mysqlConnection.query(
       "SELECT * FROM proyecto_drteeth.Odontograma WHERE idPaciente = ?;",
       [id],
@@ -22,27 +22,13 @@ router.get("/Odontograma/:id", (req, res) => {
 
 //ADD--------------------------------------------------
 router.post("/Odontograma", (req, res) => {
-    const {idOdontograma, vestibular, lingual, mesial, ocusal, distal, dienteSup, dienteInf, dienteLecheSup, dienteLecheInf, idPaciente} = req.body;
-    const query = `
-          SET @idOdontograma= ?;
-          SET @vestibular = ?;
-          SET @lingual = ?;
-          SET @mesial = ?;
-          SET @ocusal= ?;
-          SET @distal = ?;
-          SET @dienteSup = ?;
-          SET @dienteInf = ?;
-          SET @dienteLecheSup = ?;
-          SET @dienteLecheInf = ?;
-          SET @idPaciente = ?;
-          
-          
-          CALL newaddoreditOdontograma(@idOdontograma, @vestibular, @lingual, @mesial, @ocusal, @distal, @dienteSup, @dienteInf, @dienteLecheSup, @dienteLecheInf,  @idPaciente);`;
+    const {dienteSup, dienteInf, dientesLecheSup, dientesLecheInf, diagnostico, planTratamiento, idPaciente} = req.body;
+    const query = `INSERT INTO Odontograma VALUES (?,?,?,?,?,?,?,?)`;
     mysqlConnection.query(
-      query,
-      [idOdontograma, vestibular, lingual, mesial, ocusal, distal, dienteSup, dienteInf, dienteLecheSup, dienteLecheInf, idPaciente],
-      (err) => {
+      query, [0, JSON.stringify(dienteSup), JSON.stringify(dienteInf), JSON.stringify(dientesLecheSup), JSON.stringify(dientesLecheInf), diagnostico, planTratamiento, idPaciente],
+      (err, rows) => {
         if (!err) {
+          console.log(rows)
           res.json({
             status: "Se ha guardado correctamente el registro",
           });
@@ -55,25 +41,25 @@ router.post("/Odontograma", (req, res) => {
 
 //EDIT--------------------------------------------------------------------------------------------------------------------------------------------------
 
-router.put('/Odontograma/:id', (req, res) => {
-    const {vestibular, lingual, mesial, ocusal, distal, dienteSup, dienteInf, dienteLecheSup, dienteLecheInf, idPaciente } = req.body;
-    const { id } = req.params;
-    const query = `
-          SET @idOdontograma= ?;
-          SET @vestibular = ?;
-          SET @lingual = ?;
-          SET @mesial = ?;
-          SET @ocusal= ?;
-          SET @distal = ?;
-          SET @dienteSup = ?;
-          SET @dienteInf = ?;
-          SET @dienteLecheSup = ?;
-          SET @dienteLecheInf = ?;
-          SET @idPaciente = ?;
-          
-          
-          CALL newaddoreditOdontograma(@idOdontograma, @vestibular, @lingual, @mesial, @ocusal, @distal, @dienteSup, @dienteInf, @dienteLecheSup, @dienteLecheInf,  @idPaciente);`;
-    mysqlConnection.query(query, [id, vestibular, lingual, mesial, ocusal, distal, dienteSup, dienteInf, dienteLecheSup, dienteLecheInf, idPaciente], (err) => {
+router.put('/Odontograma', (req, res) => {
+  const {idOdontograma, dienteSup, dienteInf, dientesLecheSup, dientesLecheInf, diagnostico, planTratamiento} = req.body;
+    const query = `UPDATE Odontograma SET 
+    dienteSup = ?,
+    dienteInf = ?,
+    dienteLecheSup = ?,
+    dienteLecheInf = ?,
+    diagnostico = ?,
+    planTratamiento = ?
+    WHERE idOdontograma = ?;`;
+    mysqlConnection.query(query,
+      [
+        JSON.stringify(dienteSup),
+        JSON.stringify(dienteInf),
+        JSON.stringify(dientesLecheSup),
+        JSON.stringify(dientesLecheInf),
+        diagnostico,
+        planTratamiento,
+        idOdontograma], (err) => {
       if(!err) {
         res.json({status: 'Se actualizo correctamente el registro '});
       } else {

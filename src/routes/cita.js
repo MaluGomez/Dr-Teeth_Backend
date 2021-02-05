@@ -22,21 +22,11 @@ router.get("/Cita/Odontologo/:idOdontologo", (req, res) => {
 // AGENDAR CITA ---- ME DIO PEREZA TRADUCIRLO IGUAL TODO ESTA EN ESPANINGLISH AJAJAJAJAJA 
 
 router.post("/Cita", (req, res) => {
-    const {idCita, nombrePaciente, apellidoPaciente, numDoc, fecha, hora, idPaciente, idOdontologo} = req.body;
-    const query = `
-          SET @idCita= ?;
-          SET @nombrePaciente = ?;
-          SET @apellidoPaciente = ?;
-          SET @numDoc = ?;
-          SET @fecha = ?;
-          SET @hora = ?;
-          SET @idPaciente = ?;
-          SET @idOdontologo = ?;
-          
-          CALL newaddoreditCita(@idCita, @nombrePaciente, @apellidoPaciente, @numDoc, @fecha, @hora, @idPaciente, @idOdontologo);`;
+    const {nombrePaciente, apellidoPaciente, numDoc, fecha, hora, idPaciente, idOdontologo} = req.body;
+    const query = `INSERT INTO Cita VALUE (?,?,?,?,?,?,?,?)`;
     mysqlConnection.query(
       query,
-      [idCita, nombrePaciente, apellidoPaciente, numDoc, fecha, hora, idPaciente, idOdontologo],
+      [0,nombrePaciente, apellidoPaciente, numDoc, fecha, hora, idPaciente, idOdontologo],
       (err) => {
         if (!err) {
           res.json({
@@ -53,7 +43,7 @@ router.post("/Cita", (req, res) => {
   router.delete("/Cita/:id", (req, res) => {
     const { id } = req.params;
     mysqlConnection.query(
-      "DELETE FROM proyecto_drteeth.Cita WHERE idPaciente = ?",
+      "DELETE FROM proyecto_drteeth.Cita WHERE idCita = ?",
       [id],
       (err) => {
         if (!err) {
