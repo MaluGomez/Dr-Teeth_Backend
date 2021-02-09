@@ -1,5 +1,7 @@
 const express = require("express");
 const router = express.Router();
+const bcrypt = require('bcrypt')
+
 
 const mysqlConnection = require("../database");
 
@@ -46,9 +48,12 @@ router.post("/Administrador", (req, res) => {
       SET @rol =?;
       
       CALL newaddoreditAdministrador(@idAdministrador, @nombres, @apellidos, @email, @telefono, @contrasena, @rol);`;
+
+      bcrypt.hash(contrasena, 10, (err, hash) => 
+      {
   mysqlConnection.query(
     query,
-    [idAdministrador, nombres, apellidos, email, telefono, contrasena, 0],
+    [idAdministrador, nombres, apellidos, email, telefono, hash, 0],
     (err) => {
       if (!err) {
         res.json({
@@ -62,6 +67,7 @@ router.post("/Administrador", (req, res) => {
       }
     }
   );
+});
 });
 
 // UPDATE ADMIN

@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const bcrypt = require('bcrypt')
 
 const mysqlConnection = require("../database");
 
@@ -55,10 +56,12 @@ router.post("/Odontologo", (req, res) => {
       SET @rol = ?;
       
       CALL newaddoreditOdontologo(@idOdontologo, @nombres, @apellidos, @direccionAtencion, @telefono, @email, @numeroRegistro, @genero, @fechaNacimiento, @documentoIdentidad,  @tipoDoc, @descripcion, @contrasena, @rol);`;
+      bcrypt.hash(contrasena, 10, (err, hash) => 
+      {
   mysqlConnection.query(
     query,
     [
-      idOdontologo,nombres,apellidos,direccionAtencion,telefono,email,numeroRegistro,genero,fechaNacimiento,documentoIdentidad,tipoDoc,descripcion,contrasena,1
+      idOdontologo,nombres,apellidos,direccionAtencion,telefono,email,numeroRegistro,genero,fechaNacimiento,documentoIdentidad,tipoDoc,descripcion,hash,1
     ],
     (err) => {
       if (!err) {
@@ -71,7 +74,7 @@ router.post("/Odontologo", (req, res) => {
     }
   );
 });
-
+});
 
 //EDIT-----------------------------------------------------------------------------------------------------
 
