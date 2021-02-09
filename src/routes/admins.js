@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-
+const bcrypt = require('bcrypt')
 const mysqlConnection = require("../database");
 
 // LIST ALL
@@ -35,7 +35,7 @@ router.get("/Administrador/:usu", (req, res) => {
 
 // CREATE ADMINS
 router.post("/Administrador", (req, res) => {
-  const { idAdministrador, nombres, apellidos, email, telefono, contrasena } = req.body;
+  const { idAdministrador, nombres, apellidos, email, telefono, contrasena } = req.body[0];
   const query = `
       SET @idAdministrador= ?;
       SET @nombres = ?;
@@ -46,22 +46,27 @@ router.post("/Administrador", (req, res) => {
       SET @rol =?;
       
       CALL newaddoreditAdministrador(@idAdministrador, @nombres, @apellidos, @email, @telefono, @contrasena, @rol);`;
-  mysqlConnection.query(
-    query,
-    [idAdministrador, nombres, apellidos, email, telefono, contrasena, 0],
-    (err) => {
-      if (!err) {
-        res.json({
-          status: "Se ha creado correctamente el nuevo usuario administrador",
-        });
-      } else {
-        res.json({
-          status: "Se ha producido un error al crear el usuario!!!!",
-        });
-        console.log(err);
-      }
-    }
-  );
+
+      bcrypt.hash(contrasena, 10, (err, hash) => 
+      {
+        mysqlConnection.query(
+          query,
+          [idAdministrador, nombres, apellidos, email, telefono, hash, 0],
+          (err) => {
+            if (!err) {
+              res.json({
+                status: "Se ha creado correctamente el nuevo usuario administrador",
+              });
+            } else {
+              res.json({
+                status: "Se ha producido un error al crear el usuario!!!!",
+              });
+              console.log(err);
+            }
+          }
+        );
+      });
+
 });
 
 // UPDATE ADMIN
