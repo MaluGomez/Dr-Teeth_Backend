@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
-const bcrypt = require('bcrypt')
+const bcrypt = require('bcrypt');
+
 
 const mysqlConnection = require("../database");
 
@@ -58,23 +59,25 @@ router.post("/Odontologo", (req, res) => {
       CALL newaddoreditOdontologo(@idOdontologo, @nombres, @apellidos, @direccionAtencion, @telefono, @email, @numeroRegistro, @genero, @fechaNacimiento, @documentoIdentidad,  @tipoDoc, @descripcion, @contrasena, @rol);`;
       bcrypt.hash(contrasena, 10, (err, hash) => 
       {
-  mysqlConnection.query(
-    query,
-    [
-      idOdontologo,nombres,apellidos,direccionAtencion,telefono,email,numeroRegistro,genero,fechaNacimiento,documentoIdentidad,tipoDoc,descripcion,hash,1
-    ],
-    (err) => {
-      if (!err) {
-        res.json({
-          status: "Se ha creado correctamente el nuevo odontólogo",
-        });
-      } else {
-        console.log(err);
-      }
-    }
-  );
+        mysqlConnection.query(
+          query,
+          [
+            idOdontologo,nombres,apellidos,direccionAtencion,telefono,email,numeroRegistro,genero,fechaNacimiento,documentoIdentidad,tipoDoc,descripcion,hash,1
+          ],
+          (err) => {
+            if (!err) {
+              res.json({
+                status: "Se ha creado correctamente el nuevo odontólogo",
+              });
+            } else {
+              console.log(err);
+            }
+          }
+        );
+
+      });
 });
-});
+
 
 //EDIT-----------------------------------------------------------------------------------------------------
 

@@ -63,7 +63,7 @@ router.get("/Paciente/:word", (req, res) => {
 });
 
 
-// CREATE PACIENTE
+// AGREGAR PACIENTE
 router.post("/Paciente", (req, res) => {
   const {nombres, apellidos, numeroIdentificacion, tipoIdentificacion, fechaNacimiento, direccion, genero, rh, telefono, email,eps, idOdontologo} = req.body;
   console.log(nombres, apellidos, numeroIdentificacion, tipoIdentificacion, fechaNacimiento, direccion, genero, rh, telefono, email,eps, idOdontologo)
@@ -79,7 +79,7 @@ router.post("/Paciente", (req, res) => {
   );
 });
 
-// UPDATE PACIENTE
+// ACTUALIZAR PACIENTE
 router.put('/Paciente', (req, res) => {
   const {nombres,apellidos,numeroIdentificacion,tipoIdentificacion,fechaNacimiento,direccion,genero,rh,telefono,email,eps,idPaciente } = req.body;
   const query = ` UPDATE Paciente
