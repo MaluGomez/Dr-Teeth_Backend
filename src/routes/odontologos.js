@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const bcrypt = require('bcrypt');
+//const bcrypt = require('bcrypt');
 
 
 const mysqlConnection = require("../database");
@@ -39,7 +39,7 @@ router.get("/Odontologo/:word", (req, res) => {
 router.post("/Odontologo", (req, res) => {
   const {
     idOdontologo,nombres,apellidos,direccionAtencion,telefono,email,numeroRegistro,genero,fechaNacimiento,documentoIdentidad,tipoDoc,descripcion,contrasena
-  } = req.body;
+ } = req.body; 
   const query = `
       SET @idOdontologo= ?;
       SET @nombres = ?;
@@ -57,12 +57,12 @@ router.post("/Odontologo", (req, res) => {
       SET @rol = ?;
       
       CALL newaddoreditOdontologo(@idOdontologo, @nombres, @apellidos, @direccionAtencion, @telefono, @email, @numeroRegistro, @genero, @fechaNacimiento, @documentoIdentidad,  @tipoDoc, @descripcion, @contrasena, @rol);`;
-      bcrypt.hash(contrasena, 10, (err, hash) => 
-      {
+      //bcrypt.hash(contrasena, 10, (err, hash) => 
+      //{
         mysqlConnection.query(
           query,
           [
-            idOdontologo,nombres,apellidos,direccionAtencion,telefono,email,numeroRegistro,genero,fechaNacimiento,documentoIdentidad,tipoDoc,descripcion,hash,1
+            idOdontologo,nombres,apellidos,direccionAtencion,telefono,email,numeroRegistro,genero,fechaNacimiento,documentoIdentidad,tipoDoc,descripcion,contrasena,1
           ],
           (err) => {
             if (!err) {
@@ -75,7 +75,7 @@ router.post("/Odontologo", (req, res) => {
           }
         );
 
-      });
+      //});
 });
 
 
@@ -104,18 +104,6 @@ router.put('/Odontologo', (req, res) => {
     }
   });
 });
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
