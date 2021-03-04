@@ -19,8 +19,7 @@ router.get("/Consulta/:id", (req, res) => {
     );
   });
 
-
-//ADD--------------------------------------------------
+// AGREGAR CONSULTA AL PACIENTE
 router.post("/Consulta", (req, res) => {
     const {idConsulta, diagnostico, planTratamiento, idPaciente, idOdontograma} = req.body;
     const query = `
@@ -29,8 +28,6 @@ router.post("/Consulta", (req, res) => {
           SET @planTratamiento = ?;
           SET @idPaciente = ?;
           SET @idOdontograma= ?;
-          
-          
           CALL newaddoreditOdontograma(@idConsulta, @diagnostico, @planTratamiento, @idPaciente, @idOdontograma);`;
     mysqlConnection.query(
       query,
@@ -46,6 +43,4 @@ router.post("/Consulta", (req, res) => {
       }
     );
   });
-
-
 module.exports = router;
